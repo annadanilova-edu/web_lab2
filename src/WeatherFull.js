@@ -22,12 +22,12 @@ export default class WeatherFull extends React.Component {
     windToTextualDescription(degree){
         if (degree>337.5) return 'Northerly';
         if (degree>292.5) return 'North Westerly';
-        if(degree>247.5) return 'Westerly';
-        if(degree>202.5) return 'South Westerly';
-        if(degree>157.5) return 'Southerly';
-        if(degree>122.5) return 'South Easterly';
-        if(degree>67.5) return 'Easterly';
-        if(degree>22.5){return 'North Easterly';}
+        if (degree>247.5) return 'Westerly';
+        if (degree>202.5) return 'South Westerly';
+        if (degree>157.5) return 'Southerly';
+        if (degree>122.5) return 'South Easterly';
+        if (degree>67.5) return 'Easterly';
+        if (degree>22.5){return 'North Easterly';}
         return 'Northerly';
     }
 
@@ -85,10 +85,10 @@ export default class WeatherFull extends React.Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col">
+                    <div className="col-5">
                         <h3>Погода здесь</h3>
                     </div>
-                    <div className="col-9">
+                    <div className="col">
                         <button onClick={this.refreshGeoPosition}>Обновить геолокацию</button>
                     </div>
                 </div>
@@ -120,6 +120,7 @@ export default class WeatherFull extends React.Component {
                         </Suspense>
                     </div>
                 </div>
+                <hr/>
             </div>
         )
     }

@@ -9,3 +9,16 @@ tr {
 td{
     padding: 5px;
 }
+.container{
+    margin-top: 10px;
+}
+.roundButton{
+    height: 35px;
+    width: 35px;
+    border-radius: 100px;
+    border: none;
+    margin-left: 5px;
+}
+*{
+    font-family: serif;
+}

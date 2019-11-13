@@ -1,7 +1,7 @@
 import React, {lazy, Suspense} from 'react';
 import ReactDOM from 'react-dom';
 
-const WeatherFull = lazy(() => import('./WeatherFull'), 'default');
+const WeatherFull = lazy(() => import('./WeatherFull'));
 
 class App extends React.Component {
 

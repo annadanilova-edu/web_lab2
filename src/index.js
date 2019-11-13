@@ -1,12 +1,15 @@
 import React, {lazy, Suspense} from 'react';
 import ReactDOM from 'react-dom';
 
-const WeatherFull = lazy(() => import('./WeatherFull'));
-const Favorites = lazy(() => import('./Favorites'));
+import store from "./redux/store";
+
+const WeatherFull = lazy(() => import('./components/WeatherFull'));
+const Favorites = lazy(() => import('./components/Favorites'));
 
 class App extends React.Component {
 
     render() {
+        console.log(store.getState());
         return (
             <div>
                 <Suspense fallback={<div>Loading...</div>}>

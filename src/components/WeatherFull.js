@@ -1,13 +1,16 @@
 import React, { lazy, Suspense } from 'react';
-import './styles.css';
+import {connect} from "react-redux";
+import '../styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import store from "../redux/store";
+import { setError } from "../redux/actions/index";
+
+import { windToTextualDescription } from '../utils'
 
 const WeatherInfo = lazy(() => import('./WeatherInfo'), 'default');
 
-const API_KEY = "bf17aa753eec52f73cdb8d53e0609031";
-const API_URL = "https://api.openweathermap.org/data/2.5/weather?";
-
-export default class WeatherFull extends React.Component {
+class WeatherFull extends React.Component {
     state = {
         forecast: [],
         error: null
@@ -19,32 +22,25 @@ export default class WeatherFull extends React.Component {
         this.refreshGeoPosition = this.refreshGeoPosition.bind(this);
     }
 
-    windToTextualDescription(degree){
-        if (degree>337.5) return 'Northerly';
-        if (degree>292.5) return 'North Westerly';
-        if (degree>247.5) return 'Westerly';
-        if (degree>202.5) return 'South Westerly';
-        if (degree>157.5) return 'Southerly';
-        if (degree>122.5) return 'South Easterly';
-        if (degree>67.5) return 'Easterly';
-        if (degree>22.5){return 'North Easterly';}
-        return 'Northerly';
-    }
-
     refreshGeoPosition(){
         let current = this;
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
-                    let link = API_URL
+                    let link = current.props.API_URL
                         + "lat=" + (position.coords.latitude).toFixed(1)
                         + "&lon=" + (position.coords.longitude).toFixed(1)
                         + "&units=metric"
-                        + "&appid=" + API_KEY;
+                        + "&appid=" + current.props.API_KEY;
 
                     fetch(link)
-                        .then(res => res.json())
-                        .then((result) => {
+                    .then(async res => {
+                          if (res.ok) {
+                            return await res.json();
+                          } else return {cod: "404"}
+                          })
+                                .then((result) => {
+                                    if (result.cod == "200") {
                                 console.log(result);
                                 current.setState({
                                     forecast: {
@@ -52,7 +48,7 @@ export default class WeatherFull extends React.Component {
                                         temp: result.main.temp,
                                         humidity: result.main.humidity,
                                         windSpeed: result.wind.speed,
-                                        windDirection: current.windToTextualDescription(result.wind.deg),
+                                        windDirection: windToTextualDescription(result.wind.deg),
                                         pressure: result.main.pressure,
                                         clouds: result.weather[0].description,
                                         icon: result.weather[0].icon,
@@ -61,17 +57,16 @@ export default class WeatherFull extends React.Component {
                                     }
                                 });
                                 console.log(current.state.forecast);
+                                }
+                                else this.props.setError("Ошибка!")
                             },
-                            (error) => {
-                                current.setState({error: error});
-                            }
                         );
                 },
                 function (err) {
                     if (err.code === 1) {
-                        alert("Error: Access is denied!");
+                        this.props.setError("Доступ запрещён")
                     } else if (err.code === 2) {
-                        alert("Error: Position is unavailable!");
+                        this.props.setError("Невозможно определить геопозицию")
                     }
                 });
         }
@@ -125,3 +120,14 @@ export default class WeatherFull extends React.Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    API_KEY: state.API_KEY,
+    API_URL: state.API_URL
+});
+
+const mapDispatchToProps = (dispatch) => ({
+        setError: message => dispatch(setError(message))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(WeatherFull);

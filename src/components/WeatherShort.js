@@ -2,6 +2,7 @@ import React, {lazy, Suspense} from 'react';
 import {connect} from "react-redux";
 import {removeCity} from "../redux/actions";
 
+import store from "../redux/store";
 
 const WeatherInfo = lazy(() => import('./WeatherInfo'), 'default');
 

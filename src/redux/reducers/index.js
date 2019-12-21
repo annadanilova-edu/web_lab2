@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import {ADD_CITY, GET_CITIES, REMOVE_CITY, SET_ERROR } from "../action-types";
+import {ADD_CITY, REMOVE_CITY, SET_ERROR } from "../action-types";
 
-const initialState = {
+export const initialState = {
     favorites: [],
     errorMessage: "",
     API_KEY: "bf17aa753eec52f73cdb8d53e0609031",
@@ -10,8 +10,6 @@ const initialState = {
 
 function rootReducer(state = initialState, action) {
     switch (action.type) {
-        case 'GET_CITIES':
-            return state.favorites;
 
         case 'ADD_CITY':
             return Object.assign({}, state, {

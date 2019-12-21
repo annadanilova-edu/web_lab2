@@ -41,7 +41,6 @@ class WeatherFull extends React.Component {
                           })
                                 .then((result) => {
                                     if (result.cod == "200") {
-                                console.log(result);
                                 current.setState({
                                     forecast: {
                                         city: result.name,
@@ -56,7 +55,6 @@ class WeatherFull extends React.Component {
                                         lat: result.coord.lat,
                                     }
                                 });
-                                console.log(current.state.forecast);
                                 }
                                 else this.props.setError("Ошибка!")
                             },

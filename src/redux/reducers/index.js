@@ -1,6 +1,5 @@
 // eslint-disable-next-line no-unused-vars
 import {ADD_CITY, GET_CITIES, REMOVE_CITY, SET_ERROR } from "../action-types";
-import store from "../store";
 
 const initialState = {
     favorites: [],

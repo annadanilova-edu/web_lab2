@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import {addCity, setError} from "../redux/actions/index";
 
 import {windToTextualDescription} from '../utils'
-import store from "../redux/store";
 
 const WeatherShort = lazy(() => import('./WeatherShort'), 'default');
 

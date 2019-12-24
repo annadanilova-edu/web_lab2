@@ -1,4 +1,4 @@
 export const ADD_CITY = "ADD_CITY";
-export const GET_CITIES = "GET_CITIES";
 export const REMOVE_CITY = "REMOVE_CITY";
-export const SET_ERROR = "SET_ERROR";
+export const GET_WEATHER = "GET_WEATHER";
+export const ADD_CITY_WEATHER = "ADD_CITY_WEATHER";

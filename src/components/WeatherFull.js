@@ -4,16 +4,21 @@ import '../styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import store from "../redux/store";
-import { setError } from "../redux/actions/index";
 
 import { windToTextualDescription } from '../utils'
+
+// сбрасывать текст ошибки
+// лоадинг пока нет данных
+// хранить в localStorage только названия городов и перезагружать данные при открытии
+
 
 const WeatherInfo = lazy(() => import('./WeatherInfo'), 'default');
 
 class WeatherFull extends React.Component {
     state = {
+        infoLoaded: false,
         forecast: [],
-        error: null
+        errorMessage: "",
     };
 
     constructor(props) {
@@ -53,18 +58,20 @@ class WeatherFull extends React.Component {
                                         icon: result.weather[0].icon,
                                         lon: result.coord.lon,
                                         lat: result.coord.lat,
-                                    }
-                                });
+                                    },
+                                    errorMessage: "",
+                                    infoLoaded: true }
+                                    );
                                 }
-                                else this.props.setError("Ошибка!")
+                                else current.setState({errorMessage: "Невозможно получить данные о погоде"});
                             },
                         );
                 },
                 function (err) {
                     if (err.code === 1) {
-                        this.props.setError("Доступ запрещён")
+                        current.setState({errorMessage: "Досуп запрещен", infoLoaded: false});
                     } else if (err.code === 2) {
-                        this.props.setError("Невозможно определить геопозицию")
+                        current.setState({errorMessage: "Невозможно определить геолокацию", infoLoaded: false});
                     }
                 });
         }
@@ -83,8 +90,10 @@ class WeatherFull extends React.Component {
                     </div>
                     <div className="col">
                         <button onClick={this.refreshGeoPosition}>Обновить геолокацию</button>
+                        <div className="error">{this.state.errorMessage}</div>
                     </div>
                 </div>
+                { this.state.infoLoaded ? (
                 <div className="row">
                     <div className="col">
                         <div className="row">
@@ -113,6 +122,13 @@ class WeatherFull extends React.Component {
                         </Suspense>
                     </div>
                 </div>
+                )
+                : (
+                   <div>
+                       <h1>Пока ничего нет...</h1>
+                   </div>
+                )}
+
                 <hr/>
             </div>
         )
@@ -124,8 +140,4 @@ const mapStateToProps = (state) => ({
     API_URL: state.API_URL
 });
 
-const mapDispatchToProps = (dispatch) => ({
-        setError: message => dispatch(setError(message))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(WeatherFull);
+export default connect(mapStateToProps)(WeatherFull);

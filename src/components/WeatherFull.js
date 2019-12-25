@@ -7,17 +7,13 @@ import store from "../redux/store";
 
 import { windToTextualDescription } from '../utils'
 
-// сбрасывать текст ошибки
-// лоадинг пока нет данных
-// хранить в localStorage только названия городов и перезагружать данные при открытии
-
-
 const WeatherInfo = lazy(() => import('./WeatherInfo'), 'default');
 
 class WeatherFull extends React.Component {
     state = {
         infoLoaded: false,
         forecast: [],
+        message: "Пока здесь ничего нет",
         errorMessage: "",
     };
 
@@ -37,6 +33,8 @@ class WeatherFull extends React.Component {
                         + "&lon=" + (position.coords.longitude).toFixed(1)
                         + "&units=metric"
                         + "&appid=" + current.props.API_KEY;
+
+                    current.setState({message: "Идет загрузка данных"})
 
                     fetch(link)
                     .then(async res => {
@@ -69,6 +67,40 @@ class WeatherFull extends React.Component {
                 },
                 function (err) {
                     if (err.code === 1) {
+                    let link = current.props.API_URL
+                               + "q=saint%20petersburg"
+                               + "&units=metric"
+                               + "&appid=" + current.props.API_KEY;
+
+                    current.setState({message: "Идет загрузка данных"})
+                    fetch(link)
+                                        .then(async res => {
+                                              if (res.ok) {
+                                                return await res.json();
+                                              } else return {cod: "404"}
+                                              })
+                                                    .then((result) => {
+                                                        if (result.cod == "200") {
+                                                    current.setState({
+                                                        forecast: {
+                                                            city: result.name,
+                                                            temp: result.main.temp,
+                                                            humidity: result.main.humidity,
+                                                            windSpeed: result.wind.speed,
+                                                            windDirection: windToTextualDescription(result.wind.deg),
+                                                            pressure: result.main.pressure,
+                                                            clouds: result.weather[0].description,
+                                                            icon: result.weather[0].icon,
+                                                            lon: result.coord.lon,
+                                                            lat: result.coord.lat,
+                                                        },
+                                                        errorMessage: "",
+                                                        infoLoaded: true }
+                                                        );
+                                                    }
+                                                    else current.setState({errorMessage: "Невозможно получить данные о погоде"});
+                                                },
+                                            );
                         current.setState({errorMessage: "Досуп запрещен", infoLoaded: false});
                     } else if (err.code === 2) {
                         current.setState({errorMessage: "Невозможно определить геолокацию", infoLoaded: false});
@@ -125,7 +157,7 @@ class WeatherFull extends React.Component {
                 )
                 : (
                    <div>
-                       <h1>Пока ничего нет...</h1>
+                       <h1>{this.state.message}</h1>
                    </div>
                 )}
 

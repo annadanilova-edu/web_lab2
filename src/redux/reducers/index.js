@@ -63,7 +63,7 @@ function rootReducer(state = initialState, action) {
                 favoritesForecast: favorites
             });
 
-        default:
+        default: return state;
     }
     return state;
 }

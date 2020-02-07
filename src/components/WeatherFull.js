@@ -12,6 +12,7 @@ const WeatherInfo = lazy(() => import('./WeatherInfo'), 'default');
 class WeatherFull extends React.Component {
     state = {
         infoLoaded: false,
+
         forecast: [],
         message: "Пока здесь ничего нет",
         errorMessage: "",

@@ -116,7 +116,7 @@ class WeatherFull extends React.Component {
 
     render() {
         return (
-            <div className="container">
+            `<div className="container">
                 <div className="row">
                     <div className="col-5">
                         <h3>Погода здесь</h3>
@@ -163,7 +163,7 @@ class WeatherFull extends React.Component {
                 )}
 
                 <hr/>
-            </div>
+            </div>`
         )
     }
 }

@@ -2,7 +2,11 @@
   "name": "web_lab2",
   "version": "0.1.0",
   "private": true,
-  "jest": {
+  "jest":{
+    "moduleNameMapper":{
+      "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
+      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+    },
     "verbose": true
   },
   "dependencies": {

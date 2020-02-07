@@ -1,5 +1,5 @@
 module.exports = {
-    "presets": ["env"],
+    "presets": ["@babel/preset-env"],
     "plugins": [
         ["transform-replace-object-assign", {"moduleSpecifier": "object.assign"}],
         "transform-object-rest-spread",

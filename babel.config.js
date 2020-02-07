@@ -1,10 +1,3 @@
 module.exports = {
-    "presets": ["@babel/preset-env"],
-    "plugins": [
-        ["transform-replace-object-assign", {"moduleSpecifier": "object.assign"}],
-        "transform-object-rest-spread",
-        "@babel/plugin-syntax-dynamic-import",
-        "@babel/plugin-proposal-class-properties"
-    ],
-
+    "presets": ["@babel/preset-env", "@babel/preset-react"],
 };
